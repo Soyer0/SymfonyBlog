@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Post{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mb-4">Add New Post</h1>
+
+        {% if error is defined %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.title) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.slug) }}
+            {{ form_widget(form.slug, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.slug) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.content) }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+            {{ form_errors(form.content) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.tags) }}
+            {{ form_widget(form.tags, {
+                'attr': {
+                    'class': 'form-select custom-select-multiple',
+                    'multiple': 'multiple',
+                    'style': 'min-height: 120px;'
+                }
+            }) }}
+            {{ form_errors(form.tags) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Post</button>
+
+        {{ form_end(form) }}
+    </div>
+
+    <style>
+        .custom-select-multiple option {
+            padding: 8px 10px;
+            border-bottom: 1px solid #dee2e6;
+            transition: background-color 0.2s;
+        }
+
+        .custom-select-multiple option:hover {
+            background-color: #e2f0ff;
+            cursor: pointer;
+        }
+
+        .custom-select-multiple option:checked {
+            background-color: #cfe2ff;
+        }
+    </style>
+{% endblock %}

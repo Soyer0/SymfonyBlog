@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tags{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mb-4">Tags</h1>
+
+        <div class="mb-4">
+            {% for tag in tags %}
+                <span class="badge bg-primary me-1">{{ tag.name }}</span>
+            {% else %}
+                <div class="alert alert-warning">No tags found.</div>
+            {% endfor %}
+        </div>
+
+        <h2 class="mb-3">Add New Tag</h2>
+
+        {{ form_start(form) }}
+
+        <div class="mb-3">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Tag</button>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

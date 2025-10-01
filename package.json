@@ -1,0 +1,14 @@
+{
+    "name": "symfony-blog",
+    "version": "1.0.0",
+    "scripts": {
+        "build": "sass --load-path=node_modules assets/scss:public/css --no-source-map",
+        "watch": "sass --watch --load-path=node_modules assets/scss:public/css --no-source-map"
+    },
+    "devDependencies": {
+        "sass": "^1.73.0"
+    },
+    "dependencies": {
+        "bootstrap": "^5.3.8"
+    }
+}

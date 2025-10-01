@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Edit Post</h1>
+
+        {% if error is defined %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.title, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.title) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.slug, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.slug, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.slug) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.content, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows': 6}}) }}
+            {{ form_errors(form.content) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.tags, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.tags, {'attr': {'class': 'form-select custom-select-multiple', 'multiple': 'multiple', 'style': 'min-height:120px;'}}) }}
+            {{ form_errors(form.tags) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{{ path('post_index') }}" class="btn btn-secondary ms-2">Back to list</a>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
