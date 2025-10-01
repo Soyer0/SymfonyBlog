@@ -39,7 +39,7 @@ services:
 
   node:
     build:
-      context: docker/node
+      context: .
       dockerfile: docker/node/Dockerfile
     working_dir: /var/www/html
     volumes:
