@@ -25,7 +25,6 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: symfony-db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -43,14 +42,13 @@ services:
       dockerfile: docker/node/Dockerfile
     working_dir: /var/www/html
     volumes:
-      - symfony_code:/var/www/html:cached
+      - .:/var/www/html:cached
     command: [ "npm", "run", "watch" ]
     depends_on:
       - php
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
