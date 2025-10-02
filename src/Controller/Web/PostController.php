@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Web;
 
 use App\Entity\Post;
 use App\Form\PostType;
@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[Route('/posts')]
 class PostController extends AbstractController
@@ -19,17 +18,8 @@ class PostController extends AbstractController
     #[Route('/', name: 'post_index')]
     public function index(PostRepository $postRepository, Request $request): Response
     {
-        $tagId = $request->query->get('tag');
-        if ($tagId) {
-            $posts = $postRepository->createQueryBuilder('p')
-                ->join('p.tags', 't')
-                ->where('t.id = :tagId')
-                ->setParameter('tagId', $tagId)
-                ->getQuery()
-                ->getResult();
-        } else {
-            $posts = $postRepository->findAll();
-        }
+        $tagId = $request->query->getInt('tag');
+        $posts = $tagId ? $postRepository->findByTagId($tagId) : $postRepository->findAll();
 
         return $this->render('post/index.html.twig', [
             'posts' => $posts,
@@ -68,17 +58,9 @@ class PostController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'post_show')]
-    public function show(PostRepository $postRepository, string $slug): Response
+    public function show(#[MapEntity(mapping: ['slug' => 'slug'])] Post $post): Response
     {
-        $post = $postRepository->findOneBy(['slug' => $slug]);
-
-        if (!$post) {
-            throw $this->createNotFoundException('Post not found');
-        }
-
-        return $this->render('post/show.html.twig', [
-            'post' => $post,
-        ]);
+        return $this->render('post/show.html.twig', ['post' => $post]);
     }
 
     #[Route('/{slug}/edit', name: 'post_edit', methods: ['GET', 'POST'])]

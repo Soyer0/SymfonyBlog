@@ -16,6 +16,16 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    public function findByTagId(int $tagId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.tags', 't')
+            ->where('t.id = :tagId')
+            ->setParameter('tagId', $tagId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Post[] Returns an array of Post objects
     //     */
