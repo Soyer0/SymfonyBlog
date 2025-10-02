@@ -26,6 +26,15 @@ class PostRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByTagName(string $tagName): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.tags', 't')
+            ->where('t.name = :tagName')
+            ->setParameter('tagName', $tagName)
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Post[] Returns an array of Post objects
     //     */

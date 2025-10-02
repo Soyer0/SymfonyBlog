@@ -5,15 +5,26 @@ namespace App\Controller\Api;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api/posts')]
 class PostApiController extends AbstractController
 {
     #[Route('/', name: 'api_post_index', methods: ['GET'])]
-    public function index(PostRepository $postRepository): JsonResponse
+    public function index(PostRepository $postRepository, Request $request): JsonResponse
     {
-        $posts = $postRepository->findAll();
+        $tagId = $request->query->getInt('tagId');
+        $tagName = $request->query->get('tagName');
+
+        if ($tagId) {
+            $posts = $postRepository->findByTagId($tagId);
+        } elseif ($tagName) {
+            $posts = $postRepository->findByTagName($tagName);
+        } else {
+            $posts = $postRepository->findAll();
+        }
+
         return $this->json($this->serializePosts($posts));
     }
 
@@ -25,13 +36,6 @@ class PostApiController extends AbstractController
             return $this->json(['error' => 'Post not found'], 404);
         }
         return $this->json($this->serializePost($post));
-    }
-
-    #[Route('/by-tag/{tagId}', name: 'api_post_by_tag', methods: ['GET'])]
-    public function byTag(PostRepository $postRepository, int $tagId): JsonResponse
-    {
-        $posts = $postRepository->findByTagId($tagId);
-        return $this->json($this->serializePosts($posts));
     }
 
     private function serializePosts(array $posts): array
